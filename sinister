@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e -v -x
+set -e -x
 
 help()
 {
