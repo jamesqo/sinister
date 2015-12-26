@@ -13,7 +13,6 @@ help()
     echo
     echo 'output: The output directory the script should be saved to.'
     echo 'By default this is /usr/local/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
-    echo "If the directory wasn't in the PATH previously, it will be added to it."
 }
 
 while [ $# -gt 0 ]
