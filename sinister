@@ -15,9 +15,39 @@ help()
     echo 'By default this is /usr/local/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
 }
 
+on_windows()
+{
+    uname | grep -q '[CYGWIN|MINGW|MSYS]'
+}
+
+ps_run()
+{
+    powershell -NoProfile -ExecutionPolicy Bypass "$1"
+}
+
+ps_getpath()
+{
+    ps_run "[Environment]::GetEnvironmentVariable('PATH', 'User')"
+}
+
+ps_setpath()
+{
+    ps_run "[Environment]::SetEnvironmentVariable('PATH', '$1', 'User')"
+}
+
+ps_pwd()
+{
+    ps_run "Get-Location"
+}
+
 NAME=''
-OUTPUT=''
 URL=''
+
+if on_windows; then
+    OUTPUT='~/AppData/Local'
+else
+    OUTPUT='/usr/local/bin'
+fi
 
 while [ $# -gt 0 ]
 do
@@ -31,4 +61,30 @@ do
     shift
 done
 
-script=$(< /dev/stdin)
+if [ -z "$URL" ]; then
+    test ! -z "$NAME"
+    SCRIPT=$(< /dev/stdin) # read from standard input
+else
+    NAME=${URL##*/} # Grab everything after the last /
+    if which curl &> /dev/null; then
+        SCRIPT=$(curl -sSL "$URL")
+    else # Assume wget is installed
+        SCRIPT=$(wget -q -O - "$URL")
+    fi
+fi
+
+# Where the magic happens
+cd "$OUTPUT"
+echo "$SCRIPT" > "$NAME"
+chmod +x "$NAME"
+
+# Add $OUTPUT to PATH if it's not in it
+if ! which "$NAME" &> /dev/null; then
+    if on_windows; then
+        CURRENT_PATH=$(ps_getpath)
+        CURRENT_DIRECTORY=$(ps_pwd)
+        ps_setpath "$CURRENT_PATH;$CURRENT_DIRECTORY"
+    else # Unix
+        echo "export PATH=\$PATH:$OUTPUT" >> ~/.profile
+    fi
+fi
