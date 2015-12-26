@@ -6,9 +6,11 @@ help()
 {
     echo 'sinister is a simple installer for shell scripts.'
     echo
-    echo 'Usage: sinister [-n|--name name] [-o|--output dir] [-u|--url url]'
+    echo 'Usage: sinister [-l|--local] [-n|--name name] [-o|--output dir] [-u|--url url]'
     echo
     echo 'Options:'
+    echo
+    echo 'local: Specifies the script should be saved for the current user instead of the entire machine.'
     echo
     echo 'name: The name of the file the script should be saved to. Mandatory if no URL is given.'
     echo
@@ -31,12 +33,12 @@ run_powershell()
 
 getpath_windows()
 {
-    run_powershell "[Environment]::GetEnvironmentVariable('PATH', 'User')"
+    run_powershell "[Environment]::GetEnvironmentVariable('PATH', '$1')"
 }
 
 setpath_windows()
 {
-    run_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', 'User')"
+    run_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
 }
 
 pwd_windows()
@@ -44,20 +46,16 @@ pwd_windows()
     run_powershell "Get-Location"
 }
 
+LOCAL='false'
 NAME=''
 URL=''
-
-if on_windows; then
-    OUTPUT='~/AppData/Local'
-else
-    OUTPUT='~/bin'
-fi
 
 test $# -ne 0
 while [ $# -gt 0 ]
 do
     case "$1" in
         '-?'|-h|--help) help; exit 0 ;;
+        -l|--local) LOCAL='true' ;;
         -n|--name) NAME="$2"; shift ;;
         -o|--output) OUTPUT="$2"; shift ;;
         -u|--url) URL="$2"; shift ;;
@@ -65,6 +63,22 @@ do
     esac
     shift
 done
+
+if [ -z "$OUTPUT" ]; then
+    if [ $LOCAL = 'true' ]; then
+        if on_windows; then
+            OUTPUT='~/AppData/Local'
+        else
+            OUTPUT='~/bin'
+        fi
+    else
+        if on_windows; then
+            OUTPUT='/C/Program Files'
+        else
+            OUTPUT='/usr/local/bin'
+        fi
+    fi
+fi
 
 if [ -z "$URL" ]; then
     test ! -z "$NAME"
@@ -86,10 +100,20 @@ chmod +x "$NAME"
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" &> /dev/null; then
     if on_windows; then
-        CURRENT_PATH=$(getpath_windows)
+        if [ $LOCAL = 'true' ]; then
+            TARGET='User'
+        else
+            TARGET='Machine'
+        fi
+        CURRENT_PATH=$(getpath_windows $TARGET)
         CURRENT_DIRECTORY=$(pwd_windows)
-        setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY"
+        setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY" $TARGET
     else # Unix
-        echo "export PATH=\$PATH:$OUTPUT" >> ~/.profile
+        CONTENTS="export PATH=\$PATH:$OUTPUT"
+        if [ $LOCAL = 'true' ]; then
+            echo "$CONTENTS" >> ~/.profile
+        else
+            echo "$CONTENTS" >> /etc/profile
+        fi
     fi
 fi
