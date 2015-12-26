@@ -73,9 +73,9 @@ fi
 if [ -z "$OUTPUT" ]; then
     if [ $LOCAL = 'true' ]; then
         if on_windows; then
-            OUTPUT='$HOME/AppData/Local'
+            OUTPUT="$HOME/AppData/Local"
         else
-            OUTPUT='$HOME/bin'
+            OUTPUT="$HOME/bin"
         fi
     else
         if on_windows; then
