@@ -6,10 +6,11 @@ help()
     echo
     echo 'Usage: sinister [-n|--name name] [-o|--output dir] [-u|--url url]'
     echo
-    echo 'Options:'
     echo 'name: The name of the file the script should be saved to. Mandatory if no URL is given.'
+    echo
     echo 'url: The location of the script online. e.g: https://github.com/you/repo/raw/master/script'
     echo 'If no URL is given the script is read from stdin.'
+    echo
     echo 'output: The output directory the script should be saved to.'
     echo 'By default this is /usr/local/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
     echo "If the directory wasn't in the PATH previously, it will be added to it."
