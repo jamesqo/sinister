@@ -11,5 +11,5 @@ Sinister is a simple, robust installer for your shell scripts.
 ## Usage
 
 ```sh
-sh -e <(curl -sSL http://git.io/sinister) -u http://url.to/your/script
+sh <(curl -sSL http://git.io/sinister) -u http://url.to/your/script
 ```
