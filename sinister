@@ -85,7 +85,7 @@ if [ -z "$URL" ]; then
     SCRIPT=$(< /dev/stdin) # read from standard input
 else
     NAME=${URL##*/} # Grab everything after the last /
-    if which curl &> /dev/null; then
+    if which curl > /dev/null 2>&1; then
         SCRIPT=$(curl -sSL "$URL")
     else # Assume wget is installed
         SCRIPT=$(wget -q -O - "$URL")
@@ -98,7 +98,7 @@ echo "$SCRIPT" > "$NAME"
 chmod +x "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
-if ! which "$NAME" &> /dev/null; then
+if ! which "$NAME" > /dev/null 2>&1; then
     if on_windows; then
         if [ $LOCAL = 'true' ]; then
             TARGET='User'
