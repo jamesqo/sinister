@@ -15,13 +15,18 @@ help()
     echo 'By default this is /usr/local/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
 }
 
+NAME=''
+OUTPUT=''
+URL=''
+
 while [ $# -gt 0 ]
 do
     case "$1" in
-        '-?'|-h|--help)
-            help
-            exit 0
-            ;;
+        '-?'|-h|--help) help; exit 0 ;;
+        -n|--name) NAME="$2"; shift ;;
+        -o|--output) OUTPUT="$2"; shift ;;
+        -u|--url) URL="$2"; shift ;;
+        *) help; exit 1 ;;
     esac
     shift
 done
