@@ -20,24 +20,24 @@ on_windows()
     uname | grep -q '[CYGWIN|MINGW|MSYS]'
 }
 
-ps_run()
+run_powershell()
 {
     powershell -NoProfile -ExecutionPolicy Bypass "$1"
 }
 
-ps_getpath()
+getpath_windows()
 {
-    ps_run "[Environment]::GetEnvironmentVariable('PATH', 'User')"
+    run_powershell "[Environment]::GetEnvironmentVariable('PATH', 'User')"
 }
 
-ps_setpath()
+setpath_windows()
 {
-    ps_run "[Environment]::SetEnvironmentVariable('PATH', '$1', 'User')"
+    run_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', 'User')"
 }
 
-ps_pwd()
+pwd_windows()
 {
-    ps_run "Get-Location"
+    run_powershell "Get-Location"
 }
 
 NAME=''
@@ -46,7 +46,7 @@ URL=''
 if on_windows; then
     OUTPUT='~/AppData/Local'
 else
-    OUTPUT='/usr/local/bin'
+    OUTPUT='~/bin'
 fi
 
 while [ $# -gt 0 ]
@@ -81,9 +81,9 @@ chmod +x "$NAME"
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" &> /dev/null; then
     if on_windows; then
-        CURRENT_PATH=$(ps_getpath)
-        CURRENT_DIRECTORY=$(ps_pwd)
-        ps_setpath "$CURRENT_PATH;$CURRENT_DIRECTORY"
+        CURRENT_PATH=$(getpath_windows)
+        CURRENT_DIRECTORY=$(pwd_windows)
+        setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY"
     else # Unix
         echo "export PATH=\$PATH:$OUTPUT" >> ~/.profile
     fi
