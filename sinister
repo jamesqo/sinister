@@ -1,4 +1,6 @@
-#!/usr/bin/env bash -e
+#!/bin/sh
+
+set -e
 
 help()
 {
