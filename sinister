@@ -99,6 +99,7 @@ else
 fi
 
 # Where the magic happens
+mkdir -p "$OUTPUT"
 cd "$OUTPUT"
 echo "$SCRIPT" > "$NAME"
 chmod +x "$NAME"
