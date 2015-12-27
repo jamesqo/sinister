@@ -83,7 +83,7 @@ fi
 
 if [ -z "$URL" ]; then
     test ! -z "$NAME"
-    SCRIPT=$(< /dev/stdin) # read from standard input
+    SCRIPT=$(cat /dev/stdin) # read from standard input
 else
     NAME=${URL##*/} # Grab everything after the last /
     if which curl > /dev/null 2>&1; then
