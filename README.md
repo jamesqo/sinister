@@ -1,5 +1,7 @@
 # sinister
 
+[![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE)
+
 Sinister is a simple, robust installer for your shell scripts.
 
 ## Features
@@ -36,3 +38,7 @@ Here are some example projects that use Sinister:
 
 - [bomr](https://github.com/jamesqo/bomr), a UTF-8 BOM autoremover
 - [gid](https://github.com/jamesqo/gid), an automator for common Git commands
+
+## License
+
+Sinister is licensed under the [BSD simplified license](LICENSE).
