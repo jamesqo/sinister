@@ -52,11 +52,6 @@ NAME=''
 OUTPUT=''
 URL=''
 
-# Require root privileges on Unix
-if ! on_windows && [ "$USER" != 'root' ]; then
-    exec sudo "$0"
-fi
-
 test $# -ne 0
 while [ $# -gt 0 ]
 do
@@ -104,6 +99,14 @@ else
     fi
 fi
 
+if on_windows; then
+    COMMAND='sh -c'
+else
+    COMMAND='sudo'
+fi
+
+$COMMAND << EOF
+
 # Where the magic happens
 mkdir -p "$OUTPUT"
 cd "$OUTPUT"
@@ -130,3 +133,5 @@ if ! which "$NAME" > /dev/null 2>&1; then
         fi
     fi
 fi
+
+EOF
