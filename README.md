@@ -6,13 +6,15 @@ Sinister is a simple, robust installer for your shell scripts.
 
 - Cross platform: Works on both Unix and Windows
 - chmods your script so it's executable from the get-go
+- Supports both per-user and machine-wide installation
+- Can use Wget or cURL as its backend
 - Customizable and easily overridable behavior
 
 ## Usage
 
 Copy and paste this into your project's README:
 
-> To install [my awesome script], run
+> To install <my awesome script>, run
 
 ```sh
 sh <(curl -sSL http://git.io/sinister) -u http://url.to/your/script
