@@ -51,11 +51,11 @@ pwd_windows()
     run_powershell 'Get-Location'
 }
 
-CHMOD=''
+CHMOD=
 LOCAL='false'
-NAME=''
-OUTPUT=''
-URL=''
+NAME=
+OUTPUT=
+URL=
 
 test $# -ne 0
 while [ $# -gt 0 ]
