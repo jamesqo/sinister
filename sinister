@@ -100,7 +100,7 @@ fi
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
 cd "$OUTPUT"
-$SUDO echo "$SCRIPT" > "$NAME"
+echo "$SCRIPT" | sudo tee "$NAME" > /dev/null
 $SUDO chmod +x "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
