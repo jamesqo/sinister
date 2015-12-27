@@ -1,6 +1,6 @@
 # sinister
 
-[![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE)
+[![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE)
 
 Sinister is a simple, robust installer for your shell scripts.
 
