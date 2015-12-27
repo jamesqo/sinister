@@ -99,7 +99,7 @@ fi
 
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
-$SUDO cd "$OUTPUT"
+cd "$OUTPUT"
 $SUDO echo "$SCRIPT" > "$NAME"
 $SUDO chmod +x "$NAME"
 
