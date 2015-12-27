@@ -46,7 +46,6 @@ pwd_windows()
     run_powershell 'Get-Location'
 }
 
-DEBUG='false'
 LOCAL='false'
 NAME=''
 OUTPUT=''
@@ -57,7 +56,7 @@ while [ $# -gt 0 ]
 do
     case "$1" in
         '-?'|-h|--help) help; exit 0 ;;
-        -d|--debug) DEBUG='true' ;;
+        -d|--debug) set -x ;;
         -l|--local) LOCAL='true' ;;
         -n|--name) NAME="$2"; shift ;;
         -o|--output) OUTPUT="$2"; shift ;;
@@ -66,9 +65,6 @@ do
     esac
     shift
 done
-
-# Enable tracing if --debug is passed
-test $DEBUG = 'true' && set -x
 
 if [ -z "$OUTPUT" ]; then
     if [ $LOCAL = 'true' ]; then
