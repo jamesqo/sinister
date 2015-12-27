@@ -1,0 +1,5 @@
+language: sh
+install:
+  - sh -n sinister
+notifications:
+  email: false
