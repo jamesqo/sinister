@@ -1,5 +1,7 @@
 # sinister
 
+<img src="http://i.imgur.com/K5WhqMW.png" width="25%"/>
+
 [![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE)
 
 Sinister is a simple, robust installer for your shell scripts.
