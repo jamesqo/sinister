@@ -6,19 +6,19 @@ help()
 {
     echo 'sinister is a simple installer for shell scripts.'
     echo
-    echo 'Usage: sinister [-l|--local] [-n|--name name] [-o|--output dir] [-u|--url url]'
+    echo 'Usage: sinister -u url [options]'
     echo
     echo 'Options:'
     echo
-    echo 'local: Specifies the script should be saved for the current user instead of the entire machine.'
-    echo
-    echo 'name: The name of the file the script should be saved to. Mandatory if no URL is given.'
-    echo
-    echo 'url: The location of the script online. e.g: https://github.com/you/repo/raw/master/script'
-    echo 'If no URL is given the script is read from stdin.'
-    echo
-    echo 'output: The output directory the script should be saved to.'
+    echo '-?,-h,--help: Print this help and exit.'
+    echo '-c,--chmod: The mode to chmod your script. Defaults are a+x and u+x.'
+    echo '-d,--debug: sinister should be run in debug mode.'
+    echo '-l,--local: The script should be saved for the current user, instead of the entire machine.'
+    echo '-n,--name: The name of the file the script should be saved to. Mandatory if no URL is given.'
+    echo '-o,--output: The output directory the script should be saved to.'
     echo 'By default this is ~/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
+    echo '-u,--url: The location of the script online. e.g: https://github.com/you/repo/raw/master/script'
+    echo 'If no URL is given the script is read from stdin.'
 }
 
 on_windows()
