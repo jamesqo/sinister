@@ -23,3 +23,5 @@ Alternatively, if you're targeting systems that don't have Bash/cURL installed, 
 ```sh
 wget -q -O - http://git.io/sinister | xargs -0 -i sh -c '{}' -u http://url.to/your/script
 ```
+
+Sinister is written in pure sh so it's completely fine without Bash.
