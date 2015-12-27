@@ -97,11 +97,17 @@ fi
 # Use sudo on Unix
 ! on_windows && SUDO='sudo'
 
+if [ $LOCAL = 'true' ]; then
+    MODE='u+x'
+else
+    MODE='a+x'
+fi
+
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
 cd "$OUTPUT"
 echo "$SCRIPT" | $SUDO tee "$NAME" > /dev/null
-$SUDO chmod +x "$NAME"
+$SUDO chmod $MODE "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" > /dev/null 2>&1; then
