@@ -81,22 +81,6 @@ if [ -z "$CHMOD" ]; then
     fi
 fi
 
-if [ -z "$OUTPUT" ]; then
-    if per_user; then
-        if on_windows; then
-            OUTPUT=~/AppData/Local
-        else
-            OUTPUT=~/bin
-        fi
-    else
-        if on_windows; then
-            OUTPUT='/C/Program Files'
-        else
-            OUTPUT='/usr/local/bin'
-        fi
-    fi
-fi
-
 if [ -z "$URL" ]; then
     test ! -z "$NAME"
     SCRIPT=$(< /dev/stdin) # read from standard input
@@ -106,6 +90,22 @@ else
         SCRIPT=$(curl -sSL "$URL")
     else # Assume wget is installed
         SCRIPT=$(wget -q -O - "$URL")
+    fi
+fi
+
+if [ -z "$OUTPUT" ]; then
+    if per_user; then
+        if on_windows; then
+            OUTPUT=~/AppData/Local/"$NAME"
+        else
+            OUTPUT=~/bin
+        fi
+    else
+        if on_windows; then
+            OUTPUT='/C/Program Files'
+        else
+            OUTPUT='/usr/local/bin'
+        fi
     fi
 fi
 
