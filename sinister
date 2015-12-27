@@ -26,6 +26,11 @@ on_windows()
     uname | grep -q '[CYGWIN|MINGW|MSYS]'
 }
 
+per_user()
+{
+    test $LOCAL = 'true'
+}
+
 run_powershell()
 {
     powershell -NoProfile -ExecutionPolicy Bypass "$1"
@@ -46,6 +51,7 @@ pwd_windows()
     run_powershell 'Get-Location'
 }
 
+CHMOD=''
 LOCAL='false'
 NAME=''
 OUTPUT=''
@@ -56,6 +62,7 @@ while [ $# -gt 0 ]
 do
     case "$1" in
         '-?'|-h|--help) help; exit 0 ;;
+        -c|--chmod) CHMOD="$2"; shift ;;
         -d|--debug) set -x ;;
         -l|--local) LOCAL='true' ;;
         -n|--name) NAME="$2"; shift ;;
@@ -66,8 +73,16 @@ do
     shift
 done
 
+if [ -z "$CHMOD" ]; then
+    if per_user; then
+        CHMOD='u+x'
+    else
+        CHMOD='a+x'
+    fi
+fi
+
 if [ -z "$OUTPUT" ]; then
-    if [ $LOCAL = 'true' ]; then
+    if per_user; then
         if on_windows; then
             OUTPUT=~/AppData/Local
         else
@@ -97,22 +112,16 @@ fi
 # Use sudo on Unix
 ! on_windows && SUDO='sudo'
 
-if [ $LOCAL = 'true' ]; then
-    MODE='u+x'
-else
-    MODE='a+x'
-fi
-
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
 cd "$OUTPUT"
 echo "$SCRIPT" | $SUDO tee "$NAME" > /dev/null
-$SUDO chmod $MODE "$NAME"
+$SUDO chmod $CHMOD "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" > /dev/null 2>&1; then
     if on_windows; then
-        if [ $LOCAL = 'true' ]; then
+        if per_user; then
             TARGET='User'
         else
             TARGET='Machine'
@@ -122,7 +131,7 @@ if ! which "$NAME" > /dev/null 2>&1; then
         setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY" $TARGET
     else # Unix
         CONTENTS="export PATH=\$PATH:$OUTPUT"
-        if [ $LOCAL = 'true' ]; then
+        if per_user; then
             echo "$CONTENTS" >> ~/.profile
         else
             sudo echo "$CONTENTS" >> /etc/profile
