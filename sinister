@@ -102,7 +102,7 @@ if [ -z "$OUTPUT" ]; then
         fi
     else
         if on_windows; then
-            OUTPUT='/C/Program Files'
+            OUTPUT="/C/Program Files/$NAME"
         else
             OUTPUT='/usr/local/bin'
         fi
