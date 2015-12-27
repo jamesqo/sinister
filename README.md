@@ -7,6 +7,7 @@ Sinister is a simple, robust installer for your shell scripts.
 - Cross platform: Works on both Unix and Windows
 - chmods your script so it's executable from the get-go
 - Adds your script to $PATH so you can use it right away
+- Install-free: Your user doesn't need to install anything (besides your script)
 - Supports both per-user and machine-wide installation
 - Can use Wget or cURL as its backend
 - Customizable and easily overridable behavior
@@ -28,3 +29,10 @@ wget -q -O - http://git.io/sinister | xargs -0 -i sh -c '{}' - -u http://url.to/
 ```
 
 Sinister is written in pure sh so it's completely fine without Bash.
+
+## Examples
+
+Here are some example projects that use Sinister:
+
+- [bomr](https://github.com/jamesqo/bomr), a UTF-8 BOM autoremover
+- [gid](https://github.com/jamesqo/gid), an automator for common Git commands
