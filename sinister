@@ -43,13 +43,19 @@ setpath_windows()
 
 pwd_windows()
 {
-    run_powershell "Get-Location"
+    run_powershell 'Get-Location'
 }
 
 DEBUG='false'
 LOCAL='false'
 NAME=''
+OUTPUT=''
 URL=''
+
+# Require root privileges on Unix
+if ! on_windows && [ "$USER" != 'root' ]; then
+    exec sudo "$0"
+fi
 
 test $# -ne 0
 while [ $# -gt 0 ]
