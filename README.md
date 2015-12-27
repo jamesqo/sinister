@@ -7,7 +7,7 @@ Sinister is a simple, robust installer for your shell scripts.
 - Cross platform: Works on both Unix and Windows
 - chmods your script so it's executable from the get-go
 - Supports both per-user and machine-wide installation
-- Can use wget or cURL as its backend
+- Can use Wget or cURL as its backend
 - Customizable and easily overridable behavior
 
 ## Usage
