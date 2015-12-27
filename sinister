@@ -54,7 +54,7 @@ URL=''
 
 # Require root privileges on Unix
 if ! on_windows && [ "$USER" != 'root' ]; then
-    exec sudo sh "$0"
+    exec sudo "$0"
 fi
 
 test $# -ne 0
