@@ -67,9 +67,8 @@ do
     shift
 done
 
-if [ $DEBUG = 'true' ]; then
-    set -x
-fi
+# Enable tracing if --debug is passed
+test $DEBUG = 'true' && set -x
 
 if [ -z "$OUTPUT" ]; then
     if [ $LOCAL = 'true' ]; then
@@ -99,19 +98,14 @@ else
     fi
 fi
 
-if on_windows; then
-    COMMAND='sh -c'
-else
-    COMMAND='sudo -s'
-fi
-
-$COMMAND << EOF
+# Use sudo on Unix
+! on_windows && SUDO='sudo'
 
 # Where the magic happens
-mkdir -p "$OUTPUT"
-cd "$OUTPUT"
-echo "$SCRIPT" > "$NAME"
-chmod +x "$NAME"
+$SUDO mkdir -p "$OUTPUT"
+$SUDO cd "$OUTPUT"
+$SUDO echo "$SCRIPT" > "$NAME"
+$SUDO chmod +x "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" > /dev/null 2>&1; then
@@ -129,9 +123,7 @@ if ! which "$NAME" > /dev/null 2>&1; then
         if [ $LOCAL = 'true' ]; then
             echo "$CONTENTS" >> ~/.profile
         else
-            echo "$CONTENTS" >> /etc/profile
+            sudo echo "$CONTENTS" >> /etc/profile
         fi
     fi
 fi
-
-EOF
