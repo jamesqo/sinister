@@ -75,9 +75,9 @@ done
 
 if [ -z "$CHMOD" ]; then
     if per_user; then
-        CHMOD='u+x'
+        CHMOD='u+x' # Executable for the current user
     else
-        CHMOD='a+x'
+        CHMOD='a+x' # Executable for all users
     fi
 fi
 
