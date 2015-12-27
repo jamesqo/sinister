@@ -41,6 +41,10 @@ Here are some example projects that use Sinister:
 - [bomr](https://github.com/jamesqo/bomr), a UTF-8 BOM autoremover
 - [gid](https://github.com/jamesqo/gid), an automator for common Git commands
 
+## Contributing
+
+Contributors are welcome! Please feel free to report bugs or make pull requests to this repo.
+
 ## License
 
 Sinister is licensed under the [BSD simplified license](LICENSE).
