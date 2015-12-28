@@ -34,6 +34,28 @@ wget -q -O - http://git.io/sinister | xargs -0 -i sh -c '{}' - -u http://url.to/
 
 Sinister is written in pure sh so it's completely fine without Bash.
 
+### How do I control the output location of Sinister?
+
+Specify the `-o` and `-n` options:
+
+```sh
+sinister -o output/dir -n file.name
+```
+
+### How do I install my script for just the current user?
+
+```sh
+sinister --local
+```
+
+### Can I change the mode my script is chmodded with?
+
+Yes, you can. Pass in the `--chmod` flag:
+
+```sh
+sinister --chmod 755
+```
+
 ## Examples
 
 Here are some example projects that use Sinister:
