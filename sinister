@@ -16,7 +16,7 @@ help()
     echo '-l,--local: The script should be saved for the current user, instead of the entire machine.'
     echo '-n,--name: The name of the file the script should be saved to. Mandatory if no URL is given.'
     echo '-o,--output: The output directory the script should be saved to.'
-    echo 'By default this is ~/bin on Unix systems, and C:\Users\you\AppData\Local\script on Windows.'
+    echo 'By default this is /usr/local/bin on Unix systems, and C:\Program Files\script on Windows.'
     echo '-u,--url: The location of the script online. e.g: https://github.com/you/repo/raw/master/script'
     echo 'If no URL is given the script is read from stdin.'
 }
@@ -51,6 +51,11 @@ pwd_windows()
     exec_powershell 'Get-Location'
 }
 
+if on_windows && ! net session > /dev/null 2>&1; then
+    echo 'sinister needs to be run with admin privileges.' 1>&2
+    exit 1
+fi
+
 CHMOD=
 LOCAL='false'
 NAME=
@@ -68,7 +73,7 @@ do
         -n|--name) NAME="$2"; shift ;;
         -o|--output) OUTPUT="$2"; shift ;;
         -u|--url) URL="$2"; shift ;;
-        *) help; exit 1 ;;
+        *) help 1>&2; exit 1 ;;
     esac
     shift
 done
