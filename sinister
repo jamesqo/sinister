@@ -21,7 +21,7 @@ help()
     echo 'If no URL is given the script is read from stdin.'
 }
 
-on_windows()
+windows()
 {
     uname | grep -q '[CYGWIN|MINGW|MSYS]'
 }
@@ -31,24 +31,24 @@ per_user()
     test $LOCAL = 'true'
 }
 
-run_powershell()
+exec_powershell()
 {
     powershell -NoProfile -ExecutionPolicy Bypass "$1"
 }
 
 getpath_windows()
 {
-    run_powershell "[Environment]::GetEnvironmentVariable('PATH', '$1')"
+    exec_powershell "[Environment]::GetEnvironmentVariable('PATH', '$1')"
 }
 
 setpath_windows()
 {
-    run_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
+    exec_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
 }
 
 pwd_windows()
 {
-    run_powershell 'Get-Location'
+    exec_powershell 'Get-Location'
 }
 
 CHMOD=
@@ -95,13 +95,13 @@ fi
 
 if [ -z "$OUTPUT" ]; then
     if per_user; then
-        if on_windows; then
+        if windows; then
             OUTPUT=~/AppData/Local/"$NAME"
         else
             OUTPUT=~/bin
         fi
     else
-        if on_windows; then
+        if windows; then
             OUTPUT="/C/Program Files/$NAME"
         else
             OUTPUT='/usr/local/bin'
@@ -110,7 +110,7 @@ if [ -z "$OUTPUT" ]; then
 fi
 
 # Use sudo on Unix
-! on_windows && SUDO='sudo'
+! windows && SUDO='sudo'
 
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
@@ -120,7 +120,7 @@ $SUDO chmod $CHMOD "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
 if ! which "$NAME" > /dev/null 2>&1; then
-    if on_windows; then
+    if windows; then
         if per_user; then
             TARGET='User'
         else
