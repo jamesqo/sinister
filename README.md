@@ -2,7 +2,7 @@
 
 <img src="http://i.imgur.com/K5WhqMW.png" width="25%"/>
 
-[![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE)
+[![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE) [![](https://img.shields.io/badge/gitter-join-FF2B6E.svg?style=flat-square)](https://gitter.im/jamesqo/sinister)
 
 Sinister is a simple, robust installer for your shell scripts.
 
@@ -32,7 +32,7 @@ Alternatively, if you're targeting systems that don't have Bash/cURL installed, 
 wget -q -O - http://git.io/sinister | xargs -0 -i sh -c '{}' - -u http://url.to/your/script
 ```
 
-Sinister is written in pure sh so it's completely fine without Bash.
+Sinister is written in pure sh, so it's completely fine without Bash.
 
 ### How do I control the output location of Sinister?
 
