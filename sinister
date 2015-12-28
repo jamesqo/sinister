@@ -73,12 +73,10 @@ do
     shift
 done
 
-if [ -z "$CHMOD" ]; then
-    if per_user; then
-        CHMOD='u+x' # Executable for the current user
-    else
-        CHMOD='a+x' # Executable for all users
-    fi
+test -z "$CHMOD" && if per_user; then
+    CHMOD='u+x' # Executable for the current user
+else
+    CHMOD='a+x' # Executable for all users
 fi
 
 if [ -z "$URL" ]; then
@@ -93,24 +91,22 @@ else
     fi
 fi
 
-if [ -z "$OUTPUT" ]; then
-    if per_user; then
-        if windows; then
-            OUTPUT=~/AppData/Local/"$NAME"
-        else
-            OUTPUT=~/bin
-        fi
+test -z "$OUTPUT" && if per_user; then
+    if windows; then
+        OUTPUT=~/AppData/Local/"$NAME"
     else
-        if windows; then
-            OUTPUT="/C/Program Files/$NAME"
-        else
-            OUTPUT='/usr/local/bin'
-        fi
+        OUTPUT=~/bin
+    fi
+else
+    if windows; then
+        OUTPUT="/C/Program Files/$NAME"
+    else
+        OUTPUT='/usr/local/bin'
     fi
 fi
 
 # Use sudo on Unix
-! windows && SUDO='sudo'
+windows || SUDO='sudo'
 
 # Where the magic happens
 $SUDO mkdir -p "$OUTPUT"
@@ -119,22 +115,20 @@ echo "$SCRIPT" | $SUDO tee "$NAME" > /dev/null
 $SUDO chmod $CHMOD "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
-if ! which "$NAME" > /dev/null 2>&1; then
-    if windows; then
-        if per_user; then
-            TARGET='User'
-        else
-            TARGET='Machine'
-        fi
-        CURRENT_PATH=$(getpath_windows $TARGET)
-        CURRENT_DIRECTORY=$(pwd_windows)
-        setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY" $TARGET
-    else # Unix
-        CONTENTS="export PATH=\$PATH:$OUTPUT"
-        if per_user; then
-            echo "$CONTENTS" >> ~/.profile
-        else
-            sudo echo "$CONTENTS" >> /etc/profile
-        fi
+which "$NAME" > /dev/null 2>&1 || if windows; then
+    if per_user; then
+        TARGET='User'
+    else
+        TARGET='Machine'
+    fi
+    CURRENT_PATH=$(getpath_windows $TARGET)
+    CURRENT_DIRECTORY=$(pwd_windows)
+    setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY" $TARGET
+else # Unix
+    CONTENTS="export PATH=\$PATH:$OUTPUT"
+    if per_user; then
+        echo "$CONTENTS" >> ~/.profile
+    else
+        sudo echo "$CONTENTS" >> /etc/profile
     fi
 fi
