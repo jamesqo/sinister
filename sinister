@@ -51,7 +51,7 @@ pwd_windows()
     exec_powershell 'Get-Location'
 }
 
-if on_windows && ! net session > /dev/null 2>&1; then
+if windows && ! net session > /dev/null 2>&1; then
     echo 'sinister needs to be run with admin privileges.' 1>&2
     exit 1
 fi
