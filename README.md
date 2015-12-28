@@ -1,5 +1,7 @@
 # sinister
 
+[![Join the chat at https://gitter.im/jamesqo/sinister](https://badges.gitter.im/jamesqo/sinister.svg)](https://gitter.im/jamesqo/sinister?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 <img src="http://i.imgur.com/K5WhqMW.png" width="25%"/>
 
 [![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE) [![](https://img.shields.io/badge/gitter-join-FF2B6E.svg?style=flat-square)](https://gitter.im/jamesqo/sinister)
