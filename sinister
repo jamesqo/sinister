@@ -52,7 +52,7 @@ setpath_windows()
 
 pwd_windows()
 {
-    $POWERSHELL 'Write-Host -NoNewLine $pwd'
+    $POWERSHELL 'Write-Host -NoNewline $pwd'
 }
 
 rerun_as_admin()
