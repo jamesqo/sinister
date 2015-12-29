@@ -57,13 +57,13 @@ pwd_windows()
 
 rerun_as_admin()
 {
-    ESCAPED=()
+    ESCAPED=
     for ARG in "$@"
     do
         ARG="${ARG/\'/\\\'\'}" # replace ' with \''
         ARG="${ARG/\"/\\\"}" # replace " with \\\"
         ARG="${ARG/\$/\\\$}" # replace $ with \$
-        ESCAPED+=("\"$ARG\"") # quote $ARG to account for whitespace
+        ESCAPED+="\"$ARG\" " # quote $ARG to account for whitespace
     done
     
     CURL=$(which curl) # Git Bash has issues with its $PATH as admin
