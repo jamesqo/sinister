@@ -51,9 +51,6 @@ rerun_as_admin()
     exec $POWERSHELL "saps '$SHELL_PATH' '-c ''sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
 }
 
-# Test for admin privileges on Windows
-windows && net session > /dev/null 2>&1 || rerun_as_admin
-
 CHMOD=
 LOCAL='false'
 NAME=
@@ -75,6 +72,9 @@ do
     esac
     shift
 done
+
+# Test for admin privileges on Windows
+windows && net session > /dev/null 2>&1 || rerun_as_admin
 
 test -z "$CHMOD" && if per_user; then
     CHMOD='u+x' # Executable for the current user
