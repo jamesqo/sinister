@@ -53,6 +53,7 @@ pwd_windows()
 rerun_as_admin()
 {
     SHELL_PATH=$(cygpath -w $SHELL)
+    export -f exec_powershell # Make it visible to exec
     exec exec_powershell "saps '$SHELL_PATH' '-c ''sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
 }
 
