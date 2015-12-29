@@ -30,31 +30,25 @@ per_user()
     test $LOCAL = 'true'
 }
 
-exec_powershell()
-{
-    powershell -NoProfile -ExecutionPolicy Bypass "$1"
-}
-
 getpath_windows()
 {
-    exec_powershell "[Environment]::GetEnvironmentVariable('PATH', '$1')"
+    $POWERSHELL "[Environment]::GetEnvironmentVariable('PATH', '$1')"
 }
 
 setpath_windows()
 {
-    exec_powershell "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
+    $POWERSHELL "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
 }
 
 pwd_windows()
 {
-    exec_powershell '$pwd.Path'
+    $POWERSHELL '$pwd.Path'
 }
 
 rerun_as_admin()
 {
     SHELL_PATH=$(cygpath -w $SHELL)
-    export -f exec_powershell # Make it visible to exec
-    exec exec_powershell "saps '$SHELL_PATH' '-c ''sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
 }
 
 # Test for admin privileges on Windows
@@ -64,6 +58,7 @@ CHMOD=
 LOCAL='false'
 NAME=
 OUTPUT=
+POWERSHELL='powershell -NoProfile -ExecutionPolicy Bypass'
 URL=
 
 test $# -ne 0
