@@ -47,8 +47,17 @@ pwd_windows()
 
 rerun_as_admin()
 {
+    ESCAPED=()
+    for ARG in "$@"
+    do
+        ARG="${ARG/\'/\\\'\'}" # replace ' with \''
+        ARG="${ARG/\"/\\\"}" # replace " with \\\"
+        ARG="${ARG/\$/\\\$}" # replace $ with \$
+        ESCAPED+=("\"$ARG\"") # quote $ARG to account for whitespace
+    done
+    
     SHELL_PATH=$(cygpath -w $SHELL)
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''exec sh <(curl -sSL http://git.io/sinister) $*''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''exec sh <(curl -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
 }
 
 CHMOD=
