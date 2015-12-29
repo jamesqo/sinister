@@ -126,7 +126,7 @@ test -z "$OUTPUT" && if per_user; then
     fi
 else
     if mingw; then
-        OUTPUT="/C/Program Files/$NAME"
+        OUTPUT="/c/Program Files/$NAME"
     elif cygwin; then
         OUTPUT="/cygdrive/c/Program Files/$NAME"
     else # Unix
@@ -151,8 +151,8 @@ which "$NAME" > /dev/null 2>&1 || if windows; then
         TARGET='Machine'
     fi
     CURRENT_PATH=$(getpath_windows $TARGET)
-    CURRENT_DIRECTORY=$(pwd_windows)
-    setpath_windows "$CURRENT_PATH;$CURRENT_DIRECTORY" $TARGET
+    CURRENT_DIR=$(pwd_windows)
+    setpath_windows "$CURRENT_PATH;$CURRENT_DIR" $TARGET
 else # Unix
     CONTENTS="export PATH=\$PATH:$OUTPUT"
     if per_user; then
@@ -161,3 +161,5 @@ else # Unix
         sudo echo "$CONTENTS" >> /etc/profile
     fi
 fi
+
+echo "$NAME was installed successfully."
