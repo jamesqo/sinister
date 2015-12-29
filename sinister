@@ -47,7 +47,7 @@ setpath_windows()
 
 pwd_windows()
 {
-    exec_powershell 'gl'
+    exec_powershell '$pwd.Path'
 }
 
 rerun_as_admin()
