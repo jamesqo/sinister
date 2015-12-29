@@ -56,8 +56,9 @@ rerun_as_admin()
         ESCAPED+=("\"$ARG\"") # quote $ARG to account for whitespace
     done
     
+    CURL=$(which curl) # Git Bash has issues with its $PATH as admin
     SHELL_PATH=$(cygpath -w $SHELL)
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <(curl -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
 }
 
 CHMOD=
