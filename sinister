@@ -20,9 +20,19 @@ help()
     echo 'If no URL is given the script is read from stdin.'
 }
 
+cygwin()
+{
+    uname | grep -q 'CYGWIN'
+}
+
+mingw()
+{
+    uname | grep -q '[MINGW|MSYS]'
+}
+
 windows()
 {
-    uname | grep -q '[CYGWIN|MINGW|MSYS]'
+    cygwin || mingw
 }
 
 per_user()
@@ -57,7 +67,7 @@ rerun_as_admin()
     done
     
     CURL=$(which curl) # Git Bash has issues with its $PATH as admin
-    SHELL_PATH=$(cygpath -w $SHELL)
+    SHELL_PATH=$(cd ${SHELL%/*} && pwd_windows)
     exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
 }
 
@@ -105,15 +115,20 @@ else
 fi
 
 test -z "$OUTPUT" && if per_user; then
-    if windows; then
-        OUTPUT=~/AppData/Local/"$NAME"
-    else
+    if mingw; then
+        OUTPUT="$HOME/AppData/Local/$NAME"
+    elif cygwin; then
+        REAL_HOME=$(cygpath -u "$USERPROFILE")
+        OUTPUT="$REAL_HOME/AppData/Local/$NAME"
+    else # Unix
         OUTPUT=~/bin
     fi
 else
-    if windows; then
+    if mingw; then
         OUTPUT="/C/Program Files/$NAME"
-    else
+    elif cygwin; then
+        OUTPUT="/cygdrive/c/Program Files/$NAME"
+    else # Unix
         OUTPUT='/usr/local/bin'
     fi
 fi
