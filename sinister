@@ -48,7 +48,7 @@ pwd_windows()
 rerun_as_admin()
 {
     SHELL_PATH=$(cygpath -w $SHELL)
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''exec sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''exec sh <(curl -sSL http://git.io/sinister) $*''' -Verb RunAs"
 }
 
 CHMOD=
@@ -57,6 +57,9 @@ NAME=
 OUTPUT=
 POWERSHELL='powershell -NoProfile -ExecutionPolicy Bypass'
 URL=
+
+# Test for admin privileges on Windows
+windows && net session > /dev/null 2>&1 || rerun_as_admin "$@"
 
 test $# -ne 0
 while [ $# -gt 0 ]
@@ -72,9 +75,6 @@ do
     esac
     shift
 done
-
-# Test for admin privileges on Windows
-windows && net session > /dev/null 2>&1 || rerun_as_admin
 
 test -z "$CHMOD" && if per_user; then
     CHMOD='u+x' # Executable for the current user
