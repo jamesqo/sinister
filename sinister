@@ -12,7 +12,6 @@ help()
     echo
     echo '-?,-h,--help: Print this help and exit.'
     echo '-c,--chmod: The mode to chmod your script. Defaults are a+x and u+x.'
-    echo '-d,--debug: sinister should be run in debug mode.'
     echo '-l,--local: The script should be saved for the current user, instead of the entire machine.'
     echo '-n,--name: The name of the file the script should be saved to. Mandatory if no URL is given.'
     echo '-o,--output: The output directory the script should be saved to.'
@@ -68,7 +67,6 @@ do
     case "$1" in
         '-?'|-h|--help) help; exit 0 ;;
         -c|--chmod) CHMOD="$2"; shift ;;
-        -d|--debug) set -x ;;
         -l|--local) LOCAL='true' ;;
         -n|--name) NAME="$2"; shift ;;
         -o|--output) OUTPUT="$2"; shift ;;
