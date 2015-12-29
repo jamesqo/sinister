@@ -68,7 +68,7 @@ rerun_as_admin()
     
     CURL=$(which curl) # Git Bash has issues with its $PATH as admin
     SHELL_PATH=$(cd ${SHELL%/*} && pwd_windows)
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) $ESCAPED''' -Verb RunAs"
 }
 
 CHMOD=
