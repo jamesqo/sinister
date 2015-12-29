@@ -56,13 +56,8 @@ rerun_as_admin()
         ESCAPED+=("\"$ARG\"") # quote $ARG to account for whitespace
     done
     
-    # For some reason, when Git Bash is run as admin places like /bin and /usr/bin
-    # aren't added to $PATH, so we need to manually capture the location here.
-    SH=$(which sh)
-    CURL=$(which curl)
-    
     SHELL_PATH=$(cygpath -w $SHELL)
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''exec $SH <($CURL -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <(curl -sSL http://git.io/sinister) ${ESCAPED[*]}''' -Verb RunAs"
 }
 
 CHMOD=
