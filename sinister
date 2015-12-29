@@ -47,13 +47,17 @@ setpath_windows()
 
 pwd_windows()
 {
-    exec_powershell 'Get-Location'
+    exec_powershell 'gl'
 }
 
-if windows && ! net session > /dev/null 2>&1; then
-    echo 'sinister needs to be run with admin privileges.' 1>&2
-    exit 1
-fi
+rerun_as_admin()
+{
+    SHELL_PATH=$(cygpath -w $SHELL)
+    exec exec_powershell "saps '$SHELL_PATH' '-c ''sh <(curl -sSL http://git.io/sinister)''' -Verb RunAs"
+}
+
+# Test for admin privileges on Windows
+windows && net session > /dev/null 2>&1 || rerun_as_admin
 
 CHMOD=
 LOCAL='false'
