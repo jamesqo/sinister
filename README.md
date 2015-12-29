@@ -2,7 +2,7 @@
 
 <img src="http://i.imgur.com/K5WhqMW.png" width="25%"/>
 
-[![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)]() [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE) [![](https://img.shields.io/badge/gitter-join-FF2B6E.svg?style=flat-square)](https://gitter.im/jamesqo/sinister)
+[![](https://img.shields.io/travis/jamesqo/sinister.svg?style=flat-square)](https://travis-ci.org/jamesqo/sinister) [![](https://img.shields.io/badge/license-BSD-blue.svg?style=flat-square)](LICENSE) [![](https://img.shields.io/badge/gitter-join-FF2B6E.svg?style=flat-square)](https://gitter.im/jamesqo/sinister)
 
 Sinister is a simple, robust installer for your shell scripts.
 
