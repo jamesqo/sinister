@@ -27,7 +27,7 @@ cygwin()
 
 mingw()
 {
-    uname | grep -q '[MINGW|MSYS]'
+    uname | egrep -q 'MINGW|MSYS'
 }
 
 windows()
