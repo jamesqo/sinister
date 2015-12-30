@@ -35,17 +35,17 @@ windows()
     cygwin || mingw
 }
 
-getpath_windows()
+wgetpath()
 {
     $POWERSHELL "[Environment]::GetEnvironmentVariable('PATH', '$1')"
 }
 
-setpath_windows()
+wsetpath()
 {
     $POWERSHELL "[Environment]::SetEnvironmentVariable('PATH', '$1', '$2')"
 }
 
-pwd_windows()
+wpwd()
 {
     $POWERSHELL 'Write-Host -NoNewline $pwd'
 }
@@ -62,7 +62,7 @@ rerun_as_admin()
     done
     
     CURL=$(which curl) # Git Bash has issues with its $PATH as admin
-    SHELL_DIR=$(cd ${SHELL%/*} && pwd_windows)
+    SHELL_DIR=$(cd ${SHELL%/*} && wpwd)
     SHELL_PATH="$SHELL_DIR\\${SHELL##*/}"
     exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) $ESCAPED''' -Verb RunAs"
 }
@@ -145,9 +145,9 @@ which "$NAME" > /dev/null 2>&1 || if windows; then
     else
         TARGET='Machine'
     fi
-    CURRENT_PATH=$(getpath_windows $TARGET)
-    CURRENT_DIR=$(pwd_windows)
-    setpath_windows "$CURRENT_PATH;$CURRENT_DIR" $TARGET
+    CURRENT_PATH=$(wgetpath $TARGET)
+    CURRENT_DIR=$(wpwd)
+    wsetpath "$CURRENT_PATH;$CURRENT_DIR" $TARGET
 else # Unix
     CONTENTS="export PATH=\$PATH:$OUTPUT"
     if $LOCAL; then
