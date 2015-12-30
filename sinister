@@ -35,11 +35,6 @@ windows()
     cygwin || mingw
 }
 
-per_user()
-{
-    test $LOCAL = 'true'
-}
-
 getpath_windows()
 {
     $POWERSHELL "[Environment]::GetEnvironmentVariable('PATH', '$1')"
@@ -97,7 +92,7 @@ do
     shift
 done
 
-test -z "$CHMOD" && if per_user; then
+test -z "$CHMOD" && if $LOCAL; then
     CHMOD='u+x' # Executable for the current user
 else
     CHMOD='a+x' # Executable for all users
@@ -115,7 +110,7 @@ else
     fi
 fi
 
-test -z "$OUTPUT" && if per_user; then
+test -z "$OUTPUT" && if $LOCAL; then
     if mingw; then
         OUTPUT="$HOME/AppData/Local/$NAME"
     elif cygwin; then
@@ -145,7 +140,7 @@ $SUDO chmod $CHMOD "$NAME"
 
 # Add $OUTPUT to PATH if it's not in it
 which "$NAME" > /dev/null 2>&1 || if windows; then
-    if per_user; then
+    if $LOCAL; then
         TARGET='User'
     else
         TARGET='Machine'
@@ -155,7 +150,7 @@ which "$NAME" > /dev/null 2>&1 || if windows; then
     setpath_windows "$CURRENT_PATH;$CURRENT_DIR" $TARGET
 else # Unix
     CONTENTS="export PATH=\$PATH:$OUTPUT"
-    if per_user; then
+    if $LOCAL; then
         echo "$CONTENTS" >> ~/.profile
     else
         sudo echo "$CONTENTS" >> /etc/profile
