@@ -75,7 +75,7 @@ POWERSHELL='powershell -NoProfile -ExecutionPolicy Bypass'
 URL=
 
 # Test for admin privileges on Windows
-windows && net session > /dev/null 2>&1 || rerun_as_admin "$@"
+windows && ! net session > /dev/null 2>&1 && rerun_as_admin "$@"
 
 test $# -ne 0
 while [ $# -gt 0 ]
