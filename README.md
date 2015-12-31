@@ -26,7 +26,7 @@ Copy and paste this into your project's README:
 sh <(curl -sSL http://git.io/sinister) -u http://url.to/your/script
 ```
 
-Alternatively, if you're targeting systems that don't have Bash/cURL installed, you can replace that with this ugly mess:
+Alternatively, if you're targeting systems that don't have Bash/cURL installed, you can use this instead:
 
 ```sh
 wget -q -O - http://git.io/sinister | sh -s -- -u http://url.to/your/script
