@@ -149,7 +149,7 @@ which "$NAME" > /dev/null 2>&1 || if windows; then
     CURRENT_DIR=$(wpwd)
     wsetpath "$CURRENT_PATH;$CURRENT_DIR" $TARGET
 else # Unix
-    CONTENTS="export PATH=\$PATH:$OUTPUT"
+    CONTENTS="export PATH=\"\$PATH:$OUTPUT\""
     if $LOCAL; then
         echo "$CONTENTS" >> ~/.profile
     else
