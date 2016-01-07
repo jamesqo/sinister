@@ -58,7 +58,7 @@ rerun_as_admin()
         ARG="${ARG/\'/\\\'\'}" # replace ' with \''
         ARG="${ARG/\"/\\\"}" # replace " with \\\"
         ARG="${ARG/\$/\\\$}" # replace $ with \$
-        ARG="${ARG/\\/\\\\}" # replace \ with \\
+        ARG="${ARG/\\/\\\\\\\\\\\\}" # replace \ with \\\\\\ (don't ask me why this works)
         ESCAPED+="\"$ARG\" " # quote $ARG to account for whitespace
     done
     
