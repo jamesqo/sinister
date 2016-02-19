@@ -50,6 +50,12 @@ wpwd()
     $POWERSHELL 'Write-Host -NoNewline $pwd'
 }
 
+convert_to_windows_path()
+{
+    DIRECTORY=$(cd "$(dirname "$1")" && wpwd)
+    echo "$DIRECTORY\\$1"
+}
+
 rerun_as_admin()
 {
     ESCAPED=
@@ -63,9 +69,16 @@ rerun_as_admin()
     done
     
     CURL=$(which curl) # Git Bash has issues with its $PATH as admin
-    SHELL_DIR=$(cd ${SHELL%/*} && wpwd)
-    SHELL_PATH="$SHELL_DIR\\${SHELL##*/}"
-    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) $ESCAPED''' -Verb RunAs"
+    SHELL_PATH=$(convert_to_windows_path "$SHELL")
+    
+    # Since we can't pipe to Start-Process from PowerShell,
+    # redirect stdin to a temporary file and grab the script from there.
+    TEMP_SCRIPT_PATH="/tmp/script.$$.$RANDOM"
+    echo "$SCRIPT" > "$TEMP_SCRIPT_PATH"
+    
+    SCRIPT_WINDOWS_PATH=$(convert_to_windows_path "$TEMP_SCRIPT_PATH")
+    
+    exec $POWERSHELL "saps '$SHELL_PATH' '-c ''PATH=\"$PATH\" exec sh <($CURL -sSL http://git.io/sinister) $ESCAPED''' -Verb RunAs -RSI '$SCRIPT_WINDOWS_PATH'"
 }
 
 CHMOD=
