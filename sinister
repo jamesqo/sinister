@@ -116,7 +116,9 @@ if [ -z "$URL" ]; then
     test ! -z "$NAME"
     SCRIPT=$(cat /dev/stdin) # read from standard input
 else
-    NAME=${URL##*/} # Grab everything after the last /
+    if [ -z "$NAME" ]; then
+        NAME=${URL##*/} # Grab everything after the last /
+    fi
     if which curl > /dev/null 2>&1; then
         SCRIPT=$(curl -sSL "$URL")
     else # Assume wget is installed
